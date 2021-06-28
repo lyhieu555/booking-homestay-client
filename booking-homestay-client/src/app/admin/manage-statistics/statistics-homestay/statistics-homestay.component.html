@@ -1,0 +1,14 @@
+
+<form [formGroup]="dateForm">
+  <mat-form-field appearance="standard"  style="width: 100%">
+    <mat-label>Chọn ngày </mat-label>
+    <mat-date-range-input   [rangePicker]="picker">
+      <input [formControlName]="'firstDay'" matStartDate placeholder="Ngày nhận nhà" required>
+      <input [formControlName]="'lastDay'" matEndDate placeholder="Ngày trả nhà"required
+             (dateChange)="endChange($event)">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker touchUi disabled="false" #picker></mat-date-range-picker>
+  </mat-form-field>
+</form>
+<div echarts [options]="options" class="echart"></div>

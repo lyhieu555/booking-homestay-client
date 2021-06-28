@@ -1,0 +1,39 @@
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+  body, h1,h2,h3,h4,h5,h6 {font-family: "Montserrat", sans-serif}
+  .w3-row-padding img {margin-bottom: 12px}
+  /* Set the width of the sidebar to 120px */
+  .w3-sidebar {width: 120px;background: #222;}
+  /* Add a left margin to the "page content" that matches the width of the sidebar (120px) */
+  #main {margin-left: 120px}
+  /* Remove margins from "page content" on small screens */
+  @media only screen and (max-width: 600px) {#main {margin-left: 0}}
+</style>
+<body class="w3-black">
+
+
+<!-- Page Content -->
+  <header class="w3-container w3-padding-32 w3-center w3-black" id="home">
+      <div class="w3-center w3-container" style=" margin-left: 340px; width: 600px; height: 800px">
+        <ul class="w3-ul w3-white w3-center ">
+          <li class="w3-dark-grey w3-xlarge w3-padding-32">Thanh toán tiền cọc</li>
+          <li class="w3-padding-16">Họ và tên: {{bookingResponse?.fullName}} | Số điện thoại: {{bookingResponse?.phone}} | Địa chỉ: {{bookingResponse?.address}}</li>
+          <li class="w3-padding-16">Tên nhà đã đặt: {{bookingResponse?.houseName}} </li>
+          <li class="w3-padding-16">Ngày sử dụng {{bookingResponse?.dateIn| date :'dd/MM/yyyy'}} - {{bookingResponse?.dateOut| date :'dd/MM/yyyy'}}</li>
+          <li class="w3-padding-16">Tổng giá nhà: {{bookingResponse?.price|  currency: "VND" | slice: 1}} VNĐ</li>
+          <li class="w3-padding-16">
+            <span class="w3-opacity">Phải cọc</span>
+            <h2>{{bookingResponse?.depositPrice|  currency: "VND" | slice: 1}} VNĐ</h2>
+          </li>
+          <li class="w3-light-grey w3-padding-24"><ngx-paypal [config]="payPalConfig"></ngx-paypal>
+            <div style="text-align: center;">
+              <h1 *ngIf="showSuccess===true" style="color: green">Đơn đã được thanh toán cọc, Hãy đợi vài giây để trở lại</h1>
+              <h1 *ngIf="showSuccess===false" style="color: red" >Đơn chưa được cọc</h1>
+            </div>
+          </li>
+        </ul>
+      </div>  </header>
+</body>

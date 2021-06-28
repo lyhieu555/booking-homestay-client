@@ -1,0 +1,31 @@
+<h4  mat-dialog-title>THÊM THẺ CĂN CƯỚC</h4>
+<form  [formGroup]="bookingForm">
+  <div class="full-name-inputs">
+    <h4 *ngIf="webCam === true && isCheck === true " style="color: red; text-align: center; padding-top: 120px; font-size: 17px">Máy ảnh bị chặn
+      quyền truy cập</h4>
+    <p *ngIf="isCheck===true && webCam === false" style="padding-top: 10px" >
+    <webcam [width]="450" [height]="300" (initError)="handleInitError($event)" [trigger]="triggerObservable"
+            (imageCapture)="handleImage($event)"></webcam>
+    </p>
+    <p *ngIf="isCheck===false">
+      <ngx-uploader  type="Kéo thả ảnh mới" height="300px" width="430px" hiddenImage="true" hiddenForm="false"
+                    (linkFile)="getImage($event)"> </ngx-uploader>
+    </p>
+    <div style="width: 450px; height: 300px; text-align:center;margin:0; padding-top:10px;">
+      <ng-image-slider *ngIf="image?.length !== 0" [images]="image" [imageSize]="{width: '450', height: '300'}"
+                       [imagePopup]="false" (imageClick)="deleteImage($event)" ></ng-image-slider>
+    </div>
+  </div>
+  <div *ngFor="let file of files">
+    <ngx-upload-task  [hiddenImage]="true" (linkFile)="getImage($event)" [file]="file"></ngx-upload-task>
+  </div>
+  <div style="padding-top: 10px">
+  <mat-slide-toggle (change)="check()"
+                    [checked]="isCheck"> {{isCheck ? "Dùng webcam" : "Tự tải ảnh lên"}}</mat-slide-toggle>
+  <button *ngIf="isCheck === true && webCam === false" style="margin-left: 240px " mat-raised-button (click)="triggerSnapshot()">Chụp</button>
+  </div>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close>Thoát</button>
+    <button [disabled]="(!bookingForm.valid)" (click)="addIdentityCard()" mat-flat-button color="primary">Thêm</button>
+  </mat-dialog-actions>
+</form>

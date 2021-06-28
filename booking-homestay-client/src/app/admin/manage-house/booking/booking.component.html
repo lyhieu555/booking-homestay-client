@@ -1,0 +1,161 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <mat-icon type="button" aria-hidden="false" routerLink="/admin/" aria-label="Example home icon">home</mat-icon>
+    <li class="breadcrumb-item"><a routerLink="/admin/">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Đặt phòng</li>
+  </ol>
+</nav>
+<nb-card>
+  <nb-card-header>
+    Đặt phòng
+  </nb-card-header>
+  <nb-card-body>
+    <button style="margin-bottom: 10px" (click)="addMember()" mat-flat-button color="primary">Thêm tài khoản</button>
+
+    <div *ngIf="bookingForm.get('id_user').value !== null">
+      <mat-icon
+        class='red-icon2'
+        matSuffix>account_box
+      </mat-icon>
+      <b style="color: black">Tài khoản đã đăng kí: {{user}}</b>
+    </div>
+    <form [formGroup]="bookingForm">
+      <div class="full-name-inputs" style="width: 100%">
+        <p style="width: 100%">
+          <mat-form-field style="width: 300px" appearance="fill" style="width: 100%">
+            <mat-label>Số điện thoại</mat-label>
+            <input  type="text" matInput [formControlName]="'phone'" [matAutocomplete]="auto" required>
+            <mat-icon
+              [ngClass]="{'red-icon': !bookingForm.get('phone').valid && bookingForm.get('phone').touched}"
+              matSuffix>phone
+            </mat-icon>
+            <mat-hint *ngIf="bookingForm.get('phone').hasError('required') && bookingForm.get('phone').touched"
+                      style="color: rgb(211, 102, 102);">Bạn không được để trống số điện thoại
+            </mat-hint>
+            <mat-hint *ngIf="bookingForm.get('phone').hasError('pattern') && bookingForm.get('phone').touched"
+                      style="color: rgb(211, 102, 102);">Bạn nhập sai định dạng số điện thoại
+            </mat-hint>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn.bind(this)">
+              <mat-option class="mat-option1" (onSelectionChange)="loadDetail()"
+                          *ngFor="let node of filteredOptionsEdit | async "
+                          [value]="node.phone">
+                <optgroup label="Nhập thông tin tài khoản đã có"></optgroup>
+                {{node.userName}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </p>
+        <p style="width: 100%">
+          <mat-form-field style="width: 100%" appearance="fill">
+            <mat-label>Họ và tên</mat-label>
+            <input matInput placeholder="Vui lòng nhập họ và tên" [formControlName]="'fullName'">
+            <mat-icon
+              [ngClass]="{'red-icon': !bookingForm.get('fullName').valid && bookingForm.get('fullName').touched}"
+              matSuffix>account_circle
+            </mat-icon>
+            <mat-hint
+              *ngIf="bookingForm.get('fullName').hasError('maxlength') && bookingForm.get('fullName').touched"
+              style="color: rgb(211, 102, 102);">Tên không quá 40 ký tự
+            </mat-hint>
+          </mat-form-field>
+        </p>
+        <p style="width: 100%">
+          <mat-form-field style="width: 100%" appearance="fill">
+            <mat-label>Địa chỉ</mat-label>
+            <input matInput placeholder="Vui lòng nhập địa chỉ" [formControlName]="'address'">
+            <mat-icon
+              [ngClass]="{'red-icon': !bookingForm.get('address').valid && bookingForm.get('address').touched}"
+              matSuffix>house
+            </mat-icon>
+            <mat-hint
+              *ngIf="bookingForm.get('address').hasError('maxlength') && bookingForm.get('address').touched"
+              style="color: rgb(211, 102, 102);">Tên không quá 40 ký tự
+            </mat-hint>
+          </mat-form-field>
+        </p>
+      </div>
+      <div class="full-name-inputs" style="width: 100%">
+        <p style="width: 100%">
+          <mat-form-field style="width: 100%" appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="Vui lòng nhập email" [formControlName]="'email'" required>
+            <mat-icon
+              [ngClass]="{'red-icon': !bookingForm.get('email').valid && bookingForm.get('email').touched}"
+              matSuffix>email
+            </mat-icon>
+            <mat-hint *ngIf="bookingForm.get('email').hasError('required') && bookingForm.get('email').touched"
+                      style="color: rgb(211, 102, 102);">Email không được để trống
+            </mat-hint>
+            <mat-hint *ngIf="bookingForm.get('email').hasError('email')   && bookingForm.get('email').touched"
+                      style="color: rgb(211, 102, 102);">Bạn nhập sai định dạng email
+            </mat-hint>
+          </mat-form-field>
+        </p>
+        <p style="width: 100%">
+          <mat-form-field style="width: 100%" appearance="fill">
+            <mat-label>Ghi chú</mat-label>
+            <textarea rows="1" matInput placeholder="Nhập ghi chú" [formControlName]="'description'"></textarea>
+            <mat-icon
+              [ngClass]="{'red-icon': !bookingForm.get('description').valid && bookingForm.get('description').touched}"
+              matSuffix>edit_note
+            </mat-icon>
+          </mat-form-field>
+        </p>
+        <p style="width: 100%">
+          <mat-form-field style="width: 100%" appearance="fill">
+            <mat-label>Nhà đặt</mat-label>
+            <mat-select [formControlName]="'id_house'">
+              <mat-option (click)="loadPrice()" *ngFor="let house of houses" [value]="house.id">
+                {{house.houseName}}
+              </mat-option>
+            </mat-select>
+            <mat-icon
+              [ngClass]="{'red-icon': !bookingForm.get('id_house').valid && bookingForm.get('id_house').touched}"
+              matSuffix>home
+            </mat-icon>
+            <mat-hint *ngIf="bookingForm.get('id_house').hasError('required')   && bookingForm.get('id_house').touched"
+                      style="color: rgb(211, 102, 102);">Không được để trống nhà
+            </mat-hint>
+          </mat-form-field>
+        </p>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <p style="width: 101%">
+            <mat-form-field appearance="fill" style="width: 100%">
+              <mat-label>Giá nhà (VNĐ)</mat-label>
+              <input matInput placeholder="Vui lòng nhập giá" [formControlName]="'price'" required>
+              <mat-icon
+                [ngClass]="{'red-icon': !bookingForm.get('price').valid && bookingForm.get('price').touched}"
+                matSuffix>price_change
+              </mat-icon>
+              <mat-hint *ngIf="bookingForm.get('price').hasError('required')   && bookingForm.get('price').touched"
+                        style="color: rgb(211, 102, 102);">Không được để trống giá nhà
+              </mat-hint>
+            </mat-form-field>
+          </p>
+        </div>
+        <div class="col-md-4">
+          <p style="padding-left: -70px ; width: 100%">
+            <mat-form-field appearance="fill"  style="width: 100%" *ngIf="bookingForm.get('id_house').value!==null">
+              <mat-label>Chọn ngày đặt nhà</mat-label>
+              <mat-date-range-input [dateFilter]="filterDate" [min]="today" [rangePicker]="picker">
+                <input [formControlName]="'dateIn'" matStartDate placeholder="Ngày nhận nhà" required>
+                <input [formControlName]="'dateOut'" matEndDate placeholder="Ngày trả nhà"required
+                       (dateChange)="endChange($event)">
+              </mat-date-range-input>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-date-range-picker touchUi disabled="false" #picker></mat-date-range-picker>
+              <mat-error *ngIf="bookingForm.controls.dateIn.hasError('matStartDateInvalid')">Ngày bắt đầu không hợp lệ
+              </mat-error>
+              <mat-error *ngIf="bookingForm.controls.dateOut.hasError('matEndDateInvalid')">Ngày kết thúc không hợp lệ</mat-error>
+            </mat-form-field>
+          </p>
+        </div>
+      </div>
+      <mat-checkbox [formControlName]="'deposit'" class="example-margin">Miễn cọc</mat-checkbox>
+    </form><br>
+    <button mat-flat-button color="warn" (click)="clear()">Làm mới</button>
+    <button (click)="bookingAdd()" [disabled]="(!bookingForm.valid)" mat-flat-button color="primary">Đặt</button>
+  </nb-card-body>
+</nb-card>

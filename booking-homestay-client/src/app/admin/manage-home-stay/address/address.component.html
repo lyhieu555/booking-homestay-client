@@ -1,0 +1,26 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <mat-icon type="button" aria-hidden="false" routerLink="/admin/" aria-label="Example home icon">home</mat-icon>
+    <li class="breadcrumb-item"><a routerLink="/admin/">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Địa chỉ</li>
+  </ol>
+</nav>
+ <nb-card>
+    <nb-card-header>Quản lý địa chỉ</nb-card-header>
+    <nb-card-body>
+      <mat-tab-group animationDuration="800ms"  mat-align-tabs="center">
+        <mat-tab label="Thành phố">
+          <ng2-smart-table [settings]="settingsTableCity" [source]="listCity"  (deleteConfirm)="onDeleteCity($event)" #tableCity>
+          </ng2-smart-table>
+        </mat-tab>
+        <mat-tab label="Quận">
+          <ng2-smart-table [settings]="settingsTableDistrict" [source]="listDistrict"  (deleteConfirm)="onDeleteDistrict($event)" #tableDistrict>
+          </ng2-smart-table>
+        </mat-tab>
+        <mat-tab label="Phường">
+          <ng2-smart-table [settings]="settingsTableVillage" [source]="listVillage"  (deleteConfirm)="onDeleteVillage($event)" #tableVillage>
+          </ng2-smart-table>
+        </mat-tab>
+      </mat-tab-group>
+    </nb-card-body>
+  </nb-card>

@@ -1,0 +1,22 @@
+.red-icon {
+  color: red;
+}
+/* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
+.red-icon svg {
+  fill: red;
+}
+
+.example-chip-list {
+  width: 100%;
+}
+.full-name-inputs,
+.validation-checkboxes .mat-form-field {
+
+  display: flex;
+  margin: 0 -0.5rem;
+
+  > * {
+    margin: 0 0.5rem;
+  }
+}
+

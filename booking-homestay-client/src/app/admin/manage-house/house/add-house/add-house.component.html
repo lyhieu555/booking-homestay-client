@@ -1,0 +1,168 @@
+<h4 mat-dialog-title>THÊM NHÀ</h4>
+<mat-horizontal-stepper [linear]="true" #stepper>
+  <mat-step [stepControl]="houseForm">
+    <form [formGroup]="houseForm">
+      <ng-template matStepLabel>Nhà</ng-template>
+      <div class="full-name-inputs">
+        <p>
+          <mat-form-field appearance="standard">
+            <mat-label>Tên nhà</mat-label>
+            <input matInput placeholder="Vui lòng nhập tên nhà" [formControlName]="'houseName'" required>
+            <mat-icon [ngClass]="{'red-icon': !houseForm.get('houseName').valid && houseForm.get('houseName').touched}"
+                      matSuffix>home
+            </mat-icon>
+            <mat-hint *ngIf="houseForm.get('houseName').hasError('required') && houseForm.get('houseName').touched"
+                      style="color: rgb(211, 102, 102);">Bạn không được để trống tên nhà
+            </mat-hint>
+            <mat-hint *ngIf="houseForm.get('houseName').hasError('maxlength') && houseForm.get('houseName').touched"
+                      style="color: rgb(211, 102, 102);">Tên nhà không quá 50 ký tự
+            </mat-hint>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="standard">
+            <mat-label>Giá nhà</mat-label>
+            <input min="0" matInput type="number" placeholder="Vui lòng nhập giá (VNĐ)" [formControlName]="'price'" required>
+            <mat-icon [ngClass]="{'red-icon': !houseForm.get('price').valid && houseForm.get('price').touched}"
+                      matSuffix>
+              price_change
+            </mat-icon>
+            <mat-hint *ngIf="houseForm.get('price').hasError('required') && houseForm.get('price').touched"
+                      style="color: rgb(211, 102, 102);">Giá nhà phải lớn hơn hoặc bằng 0
+            </mat-hint>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="standard">
+            <mat-label>Số lượng phòng ngủ</mat-label>
+            <input min="0" matInput type="number" placeholder="Vui lòng nhập số phòng" [formControlName]="'amountRoom'"
+                   required>
+            <mat-icon
+              [ngClass]="{'red-icon': !houseForm.get('amountRoom').valid && houseForm.get('amountRoom').touched}"
+              matSuffix>
+              meeting_room
+            </mat-icon>
+            <mat-hint *ngIf="houseForm.get('amountRoom').hasError('required') && houseForm.get('amountRoom').touched"
+                      style="color: rgb(211, 102, 102);">Số lượng phòng phải lớn hơn hoặc bằng 0
+            </mat-hint>
+          </mat-form-field>
+        </p>
+      </div>
+      <div class="full-name-inputs">
+        <p>
+          <mat-form-field appearance="standard">
+            <mat-label>Kích thước</mat-label>
+            <input min="0" matInput type="number" placeholder="Kích thước nhà (m²)" [formControlName]="'size'" required>
+            <mat-icon [ngClass]="{'red-icon': !houseForm.get('size').valid && houseForm.get('size').touched}"
+                      matSuffix>
+              people
+            </mat-icon>
+            <mat-hint *ngIf="houseForm.get('size').hasError('required') && houseForm.get('size').touched"
+                      style="color: rgb(211, 102, 102);">Kích thước phải lớn hơn hoặc bằng 0
+            </mat-hint>
+          </mat-form-field>
+        </p>
+        <p>
+          <mat-form-field appearance="standard">
+            <mat-label>Số người tối đa</mat-label>
+            <input matInput type="number" placeholder="Vui lòng nhập số người" [formControlName]="'capacity'"  required>
+            <mat-icon min="0" [ngClass]="{'red-icon': !houseForm.get('capacity').valid && houseForm.get('capacity').touched}"
+                      matSuffix>
+              people
+            </mat-icon>
+            <mat-hint *ngIf="houseForm.get('capacity').hasError('required') && houseForm.get('capacity').touched"
+                      style="color: rgb(211, 102, 102);">Số người tối đa phải lớn hơn hoặc bằng 0
+            </mat-hint>
+          </mat-form-field>
+        </p>
+      </div>
+      <br>
+      <div style="font-size: 16px; padding-bottom: 5px; ">Mô tả:</div>
+      <ckeditor [config]="{ extraPlugins: 'divarea', height: '100' }" [formControlName]="'description'"></ckeditor>
+      <br>
+      <div>
+        <button  mat-button [disabled]="(!houseForm.valid)" matStepperNext>Tiếp tục</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Hình ảnh</ng-template>
+    <div class="full-name-inputs" style="padding-left: 5px ">
+      <p>
+        <ngx-uploader type="Kéo thả ảnh mới" height="205px" width="205px" hiddenImage="true" hiddenForm="false"
+                      (linkFile)="getImage($event)"></ngx-uploader>
+      </p>
+      <div  style="width: 424px; height: 250px; text-align:center;margin:0; padding-top:10px;">
+        <ng-image-slider *ngIf="image?.length !== 0" [images]="image" [imageSize]="{width: '418', height: '205'}"  [imagePopup]="false"  (imageClick)="deleteImage($event)"  #nav></ng-image-slider>
+      </div>
+    </div>
+    <div>
+      <button mat-button matStepperPrevious>Quay lại</button>
+      <button mat-button (click)="submitAction(stepper)">Tiếp tục</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Cảnh quan</ng-template>
+    <p>
+      <mat-form-field class="example-chip-list">
+        <mat-chip-list #chipListView>
+          <mat-chip color="primary" selected *ngFor="let detailView of detailViews;" [selectable]="selectable"
+                    [removable]="removable"
+                    (removed)="removeView(detailView.id)">
+            {{detailView.viewName}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Cảnh quan mới..." #InputView [formControl]="inputViewName" [matAutocomplete]="auto1"
+                 [matChipInputFor]="chipListView" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur">
+        </mat-chip-list>
+        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectedView($event)">
+          <mat-option *ngFor="let view of filteredViews | async" [value]="view.id">
+            <img class="example-option-img" aria-hidden [src]="view.image" height="25">
+            {{view.viewName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </p>
+    <div>
+      <button mat-button matStepperPrevious>Quay lại</button>
+      <button mat-button matStepperNext>Tiếp tục</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Tiện ích</ng-template>
+    <p>
+      <mat-form-field class="example-chip-list">
+        <mat-chip-list #chipList>
+          <mat-chip color="primary" selected *ngFor="let detailUtility of detailUtilitys;" [selectable]="selectable">
+            {{detailUtility.utilityName}} x {{detailUtility.quantity}}
+            <mat-icon matChipRemove (click)="editDetailUtility(detailUtility.id)">edit</mat-icon>
+            <mat-icon matChipRemove (click)="removeUtility(detailUtility.id)">cancel</mat-icon>
+
+          </mat-chip>
+          <input placeholder="Tiện ích mới..." #InputUtility [formControl]="inputUtilityName" [matAutocomplete]="auto"
+                 [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                 [matChipInputAddOnBlur]="addOnBlur">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedUtility($event)">
+          <mat-option *ngFor="let utility of filteredUtilitys | async" [value]="utility.id">
+            <img class="example-option-img" aria-hidden [src]="utility.image" height="25">
+            {{utility.utilityName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </p>
+    <div>
+      <button mat-button matStepperPrevious>Quay lại</button>
+      <button mat-button matStepperNext>Tiếp tục</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Hoàn thiện</ng-template>
+    <p>Bạn đã hoàn thành xong thủ tục tạo nhà.</p>
+    <div>
+      <button mat-button matStepperPrevious>Quay lại</button>
+      <button mat-button [mat-dialog-close]="true">Kết thúc</button>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

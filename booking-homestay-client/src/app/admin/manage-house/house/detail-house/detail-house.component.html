@@ -1,0 +1,177 @@
+<h4 style="text-align: center">THÔNG TIN HOUSE: {{houses.houseName}}</h4>
+<mat-dialog-content class="mat-typography">
+  <ng-image-slider [images]="image" [imageSize]="{width: '470px', height: '245px'}" [imagePopup]="true"
+                   #nav></ng-image-slider>
+  <br><br>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="tab-content profile-tab" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="row">
+            <div class="col-md-4">
+              <label>Tên nhà:</label>
+            </div>
+            <div class="col-md-6">
+              <p>{{houses.houseName}}</p>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <label>Giá nhà:</label>
+            </div>
+            <div class="col-md-6">
+              <p>{{houses.price}} VNĐ</p>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <label>Số lượng phòng ngủ:</label>
+            </div>
+            <div class="col-md-6">
+              <p>{{houses.amountRoom}} phòng</p>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="col-md-6">
+      <div class="tab-content profile-tab" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="row">
+            <div class="col-md-4">
+              <label>Kích thước:</label>
+            </div>
+            <div class="col-md-6">
+              <p>{{houses.size}} m²</p>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <label>Số người tối đa:</label>
+            </div>
+            <div class="col-md-6">
+              <p>{{houses.capacity}} người</p>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <label>Điểm số bình chọn:</label>
+            </div>
+            <div class="col-md-6">
+              <p>{{houses.scores === 0.0 ? 'Chưa có sao' : houses.scores + ' /5 sao'}} </p>
+            </div>
+          </div>
+          <br>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="tab-content profile-tab" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="row">
+            <div class="col-md-4">
+              <label>Tiện ích:</label>
+            </div>
+            <div class="col-md-6">
+              <a *ngFor="let detailUtility of detailUtilitys"><b
+                style="color: #6666d6">{{detailUtility.utilityName}}</b><a *ngIf="detailUtilitys.length >0">, </a></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="col-md-6">
+      <div class="tab-content profile-tab" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <div class="row">
+            <div class="col-md-4">
+              <label>Cảnh quan:</label>
+            </div>
+            <div class="col-md-6">
+              <a *ngFor="let detailView of detailViews"><b style="color: #6666d6">{{detailView.viewName}}</b> , </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Đánh giá
+        </mat-panel-title>
+        <mat-panel-description>
+          Đánh giá người dùng về nhà
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <mat-form-field>
+        <mat-label>Tìm kiếm</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Nhập mục cần tìm..." #input>
+      </mat-form-field>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+
+          <ng-container matColumnDef="userName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Tên tài khoản</th>
+            <td mat-cell *matCellDef="let row"> {{row.userName}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Thời gian đánh giá</th>
+            <td mat-cell *matCellDef="let row"> {{row.createDate| date:'HH:mm:ss dd/MM/yyyy'}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="content">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nội dung</th>
+            <td mat-cell *matCellDef="let row"> {{row.content}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="rate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Sao</th>
+            <td mat-cell *matCellDef="let row ">
+              <nb-actions size="medium">
+                <nb-action icon="star" status="warning"
+                           [badgeText]="row.rate"
+                           badgePosition="top right"
+                           badgeStatus="warning">
+                </nb-action>
+              </nb-actions>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">Không có dữ liệu: "{{input.value}}"</td>
+          </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </mat-expansion-panel>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Mô tả
+        </mat-panel-title>
+        <mat-panel-description>
+          Mô tả cơ sở
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <p [innerHTML]="houses.description"></p>
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-dialog-content>

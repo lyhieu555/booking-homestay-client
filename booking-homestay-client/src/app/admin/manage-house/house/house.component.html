@@ -1,0 +1,40 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <mat-icon type="button" aria-hidden="false" routerLink="/admin/" aria-label="Example home icon">home</mat-icon>
+    <li class="breadcrumb-item"><a routerLink="/admin/">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Nhà</li>
+  </ol>
+</nav>
+<nb-card>
+  <nb-card-header>
+    Quản lý nhà
+  </nb-card-header>
+  <nb-card-body >
+    <div class="example-button-container">
+      <button (click)="addHouse()" mat-flat-button color="primary">Thêm nhà</button>
+    </div>
+    <div class="row show-grid">
+      <div class="col-md-4" *ngFor="let house of houses">
+        <mat-card class="example-card" [ngStyle]="{'background-color': (house.status === true ? 'rgb(195, 240, 225)' : 'rgb(236, 61, 102)' )}">
+          <mat-card-header>
+            <div mat-card-avatar class="example-header-image"></div>
+            <div style="width: 100%; float: left">
+            <mat-card-title>Nhà: </mat-card-title>
+            <mat-card-subtitle>{{house.houseName}}</mat-card-subtitle>
+            </div>
+            <div style="width: 38%">
+              <mat-slide-toggle (click)="checked(house)"  [checked]="house.status"><a style="font-size: 14px">{{house.status? "Mở khóa" : "Khóa"}}</a></mat-slide-toggle>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button (click)="detailHouse(house.id)">Chi tiết</button>
+            <button mat-button (click)="editHouse(house.id)">Sửa</button>
+            <button mat-button (click)="deleteHouse(house.id)">Xóa</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </nb-card-body>
+</nb-card>

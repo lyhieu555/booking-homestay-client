@@ -1,0 +1,51 @@
+<h4 mat-dialog-title>THÊM KHÁCH HÀNG</h4>
+<form (ngSubmit)="createMembers()" [formGroup]="memberForm">
+  <p>
+    <mat-form-field appearance="standard">
+      <mat-label>Tài khoản</mat-label>
+      <input matInput placeholder="Vui lòng nhập tài khoản" [formControlName]="'userName'" required>
+      <mat-icon [ngClass]="{'red-icon': !memberForm.get('userName').valid && memberForm.get('userName').touched}"
+        matSuffix>account_circle</mat-icon>
+      <mat-hint *ngIf="memberForm.get('userName').hasError('required') && memberForm.get('userName').touched "
+                style="color: rgb(211, 102, 102);"> Tên tài khoản không được để trống</mat-hint>
+      <mat-hint *ngIf="!memberForm.get('userName').hasError('required') && memberForm.get('userName').hasError('pattern') && memberForm.get('userName').touched"
+                style="color: rgb(211, 102, 102);">Tên tài khoản không chứa ký tự đặc biệt và khoảng trống</mat-hint>
+      <mat-hint  *ngIf="!memberForm.get('userName').hasError('pattern') && memberForm.get('userName').hasError('minlength') && memberForm.get('userName').touched "
+                 style="color: rgb(211, 102, 102);">Tên tài khoản phải trên 4 ký tự</mat-hint>
+      <mat-hint *ngIf="!memberForm.get('userName').hasError('pattern') &&memberForm.get('userName').hasError('maxlength') && memberForm.get('userName').touched"
+                style="color: rgb(211, 102, 102);">Tên tài khoản chỉ dưới 20 ký tự</mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="standard">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="pat@example.com" [formControlName]="'email'" required>
+      <mat-icon [ngClass]="{'red-icon': !memberForm.get('email').valid && memberForm.get('email').touched}" matSuffix>
+        email</mat-icon>
+      <mat-hint *ngIf="memberForm.get('email').hasError('required') && memberForm.get('email').touched"
+                style="color: rgb(211, 102, 102);">Email không được để trống
+      </mat-hint>
+      <mat-hint *ngIf="memberForm.get('email').hasError('email')   && memberForm.get('email').touched"
+                style="color: rgb(211, 102, 102);">Bạn nhập sai định dạng email
+      </mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="standard">
+      <mat-label>Số điện thoại</mat-label>
+      <input matInput placeholder="Vui lòng nhập số điện thoại" [formControlName]="'phone'"  required>
+      <mat-icon [ngClass]="{'red-icon': !memberForm.get('phone').valid && memberForm.get('phone').touched}" matSuffix>
+        phone</mat-icon>
+      <mat-hint *ngIf="memberForm.get('phone').hasError('required') && memberForm.get('phone').touched"
+                style="color: rgb(211, 102, 102);">Bạn không được để trống số điện thoại
+      </mat-hint>
+      <mat-hint *ngIf="memberForm.get('phone').hasError('pattern') && memberForm.get('phone').touched"
+                style="color: rgb(211, 102, 102);">Bạn nhập sai định dạng số điện thoại
+      </mat-hint>
+    </mat-form-field>
+  </p>
+  <mat-dialog-actions align="end">
+  <button mat-flat-button mat-dialog-close>Thoát</button>
+  <button [disabled]="(!memberForm.valid)" mat-flat-button color="primary" >Thêm</button>
+</mat-dialog-actions>
+</form>

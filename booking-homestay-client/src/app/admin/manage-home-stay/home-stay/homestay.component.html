@@ -1,0 +1,24 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <mat-icon type="button" aria-hidden="false" routerLink="/admin/" aria-label="Example home icon">home</mat-icon>
+    <li class="breadcrumb-item"><a routerLink="/admin/">Trang chủ</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Cơ sở</li>
+  </ol>
+</nav>
+<nb-card>
+  <nb-card-header>
+    Quản lý cơ sở
+  </nb-card-header>
+  <nb-card-body>
+    <mat-tab-group mat-align-tabs="center" animationDuration="800ms">
+      <mat-tab label="Cơ sở">
+        <ng2-smart-table [settings]="settingsTable" [source]="listHomeStay" #table>
+        </ng2-smart-table>
+      </mat-tab>
+      <mat-tab label="Danh sách khóa">
+        <ng2-smart-table [settings]="settingsTableLock" [source]="listHomeStayLock" (deleteConfirm)="onUnlock($event)">
+        </ng2-smart-table>
+      </mat-tab>
+    </mat-tab-group>
+  </nb-card-body>
+</nb-card>

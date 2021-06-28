@@ -1,0 +1,100 @@
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+<div class="w3-content w3-margin-top"  style="width:1000px;background-color: white" id="content">
+  <div class="w3-row-padding">
+    <div class="w3-container w3-card w3-white w3-margin-bottom">
+      <h2 class="w3-text-grey" style="padding-top: 16px;text-align: center">HÓA ĐƠN</h2>
+      <h6 style="text-align: center; color: black" class="w3-text-teal">Ngày
+        lập: {{transactionResponse.dateRelease | date :'dd/MM/yyyy'}}</h6><br>
+      <div class="w3-container">
+        <h5 class="w3-opacity"><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i><b>Thông tin người đặt
+          nhà</b></h5>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="col-md-6" >
+          <a style=" font-weight: bold">Họ và
+            tên: </a> {{transactionResponse.bookingResponse.fullName}}
+          </div>
+          <div class="col-md-6">
+          <a style="font-weight: bold">Số điện
+            thoại:</a> {{transactionResponse.bookingResponse.phone}}
+          </div>
+        </div>
+        <div class="row" >
+          <div class="col-md-6">
+          <a style=" font-weight: bold">Địa
+            chỉ:</a> {{transactionResponse.bookingResponse.address}}
+          </div>
+          <div class="col-md-6">
+          <a style="font-weight: bold">
+            Email: </a> {{transactionResponse.bookingResponse.email}}
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div class="w3-container">
+        <h5 class="w3-opacity"><i class="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i><b>Thông tin đơn</b>
+        </h5>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="col-md-6">
+          <a style=" font-weight: bold;">Nhà đã
+            đặt: </a>{{transactionResponse.bookingResponse.houseName}}
+          </div>
+          <div class="col-md-6">
+          <a style="font-weight: bold; ">Tổng giá
+            nhà:</a> {{transactionResponse.bookingResponse.price|  currency: "VND" | slice: 1}} VNĐ
+          </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="col-md-6">
+          <a style=" font-weight: bold">Địa
+            chỉ:</a> {{transactionResponse.bookingResponse.address}}
+        </div>
+          <div class="col-md-6">
+          <a style="font-weight: bold">
+            Đã cọc: </a>{{transactionResponse.bookingResponse.depositPrice|  currency: "VND" | slice: 1}} VNĐ
+          </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="col-md-6">
+          <a style="font-weight: bold">Tiền miễn
+            giảm: </a>{{transactionResponse.bookingResponse.discount|  currency: "VND" | slice: 1}} VNĐ
+          </div>
+          <div class="col-md-6">
+          <a style="font-weight: bold">Tiền phát
+            sinh: </a>{{transactionResponse.bookingResponse.costsIncurred|  currency: "VND" | slice: 1}} VNĐ
+          </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="col-md-10">
+            <a style=" font-weight: bold">Ngày
+              đặt:</a> {{transactionResponse.bookingResponse.dateIn| date :'dd/MM/yyyy'}}
+            - {{transactionResponse.bookingResponse.dateIn| date :'dd/MM/yyyy'}}
+          </div>
+        </div>
+        <div class="row" style="padding-bottom: 10px">
+          <div class="col-md-10">
+          <a style=" font-weight: bold">Thông
+            tin: </a> {{transactionResponse.bookingResponse.description}}
+          </div>
+        </div>
+        <hr>
+      </div>
+      <p style="text-align: center">Tổng tiền: {{transactionResponse.totalPrice|  currency: "VND" | slice: 1}} VNĐ</p>
+      <hr>
+      <div class="w3-container">
+        <div style="text-align: center">Ký tên</div>
+        <div class="row" style="margin-bottom: 36px">
+          <div class="col-md-6">
+            <p style="text-align: center">Nhân viên:</p>
+          </div>
+          <div class="col-md-6">
+            <p style="text-align: center">Người dùng:</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <button mat-raised-button (click)="downloadAsPDF()">Xuất hóa đơn</button>
+</div>

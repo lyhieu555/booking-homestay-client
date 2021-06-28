@@ -1,0 +1,35 @@
+<h4 *ngIf="!idView" mat-dialog-title>THÊM CẢNH QUAN</h4>
+<h4 *ngIf="idView"  mat-dialog-title>SỬA CẢNH QUAN</h4>
+  <form (ngSubmit)="submitAction()" [formGroup]="viewForm">
+    <p>
+      <mat-form-field appearance="standard">
+        <mat-label>Tên địa điểm</mat-label>
+        <input matInput placeholder="Vui lòng nhập tên cảnh quan" [formControlName]="'viewName'">
+        <mat-icon
+          [ngClass]="{'red-icon': !viewForm.get('viewName').valid && viewForm.get('viewName').touched}"
+          matSuffix>place</mat-icon>
+        <mat-hint *ngIf="viewForm.get('viewName').hasError('required') && viewForm.get('viewName').touched"
+                  style="color: rgb(211, 102, 102);">Bạn không được để trống tên cảnh quan
+        </mat-hint>
+        <mat-hint
+          *ngIf="viewForm.get('viewName').hasError('maxlength') && viewForm.get('viewName').touched"
+          style="color: rgb(211, 102, 102);">Tên cảnh quan không quá 50 ký tự
+        </mat-hint>
+      </mat-form-field>
+    </p>
+    <div class="full-name-inputs">
+      <p>
+        <ngx-uploader type="Kéo thả ảnh mới" height="210px" width="245px" hiddenImage="true" hiddenForm="false"
+                      (linkFile)="getImage($event)"></ngx-uploader>
+      </p>
+      <p *ngIf="this.viewForm.get('image').value !=null">
+        <img  [src]="this.viewForm.get('image').value" style=" padding-top: 8px; border-radius: 8%; height: 220px; width: 255px">
+      </p>
+    </div>
+    <mat-dialog-actions align="end">
+      <button mat-flat-button mat-dialog-close>Thoát</button>
+      <button *ngIf="!idView"  [disabled]="(!viewForm.valid)" mat-flat-button color="primary">Thêm</button>
+      <button *ngIf="idView"  [disabled]="(!viewForm.valid)" mat-flat-button color="primary">Sửa</button>
+    </mat-dialog-actions>
+  </form>
+

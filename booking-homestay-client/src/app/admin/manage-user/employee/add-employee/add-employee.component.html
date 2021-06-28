@@ -1,0 +1,70 @@
+<h4 mat-dialog-title>THÊM NHÂN VIÊN</h4>
+<form (ngSubmit)="createEmployees()"  [formGroup]="employeeForm">
+  <div class="full-name-inputs">
+    <p>
+      <mat-form-field appearance="standard">
+        <mat-label>Tài khoản</mat-label>
+        <input matInput placeholder="Vui lòng nhập tài khoản" [formControlName]="'userName'" required>
+        <mat-icon
+          [ngClass]="{'red-icon': !employeeForm.get('userName').valid && employeeForm.get('userName').touched}"
+          matSuffix>account_circle</mat-icon>
+        <mat-hint *ngIf="employeeForm.get('userName').hasError('required') && employeeForm.get('userName').touched "
+          style="color: rgb(211, 102, 102);"> Tên tài khoản không được để trống</mat-hint>
+        <mat-hint *ngIf="!employeeForm.get('userName').hasError('required') && employeeForm.get('userName').hasError('pattern') && employeeForm.get('userName').touched"
+                  style="color: rgb(211, 102, 102);">Tên tài khoản không chứa ký tự đặc biệt và khoảng trống</mat-hint>
+        <mat-hint  *ngIf="!employeeForm.get('userName').hasError('pattern') && employeeForm.get('userName').hasError('minlength') && employeeForm.get('userName').touched "
+                  style="color: rgb(211, 102, 102);">Tên tài khoản phải trên 4 ký tự</mat-hint>
+        <mat-hint *ngIf="!employeeForm.get('userName').hasError('pattern') &&employeeForm.get('userName').hasError('maxlength') && employeeForm.get('userName').touched"
+                  style="color: rgb(211, 102, 102);">Tên tài khoản chỉ dưới 20 ký tự</mat-hint>
+      </mat-form-field>
+    </p>
+    <p>
+      <mat-form-field appearance="standard">
+        <mat-label>Home stay</mat-label>
+        <mat-select [formControlName]="'id_homeStay'" required>
+          <mat-option *ngFor="let homeStay of homeStays" [value]="homeStay.id">
+            {{homeStay.homeStayName}}
+          </mat-option>
+        </mat-select>
+        <mat-icon [ngClass]="{'red-icon': !employeeForm.get('id_homeStay').valid && employeeForm.get('id_homeStay').touched}"
+        matSuffix>house</mat-icon>
+        <mat-hint *ngIf="!employeeForm.get('id_homeStay').valid && employeeForm.get('id_homeStay').touched"
+          style="color: rgb(211, 102, 102);">Không để trống cơ sở</mat-hint>
+      </mat-form-field>
+    </p>
+  </div>
+  <div class="full-name-inputs">
+  <p>
+    <mat-form-field appearance="standard">
+      <mat-label>Số điện thoại</mat-label>
+      <input matInput placeholder="Vui lòng nhập số điện thoại" [formControlName]="'phone'" required>
+      <mat-icon [ngClass]="{'red-icon': !employeeForm.get('phone').valid && employeeForm.get('phone').touched}"
+                matSuffix>phone</mat-icon>
+      <mat-hint *ngIf="employeeForm.get('phone').hasError('required') && employeeForm.get('phone').touched"
+                style="color: rgb(211, 102, 102);">Bạn không được để trống số điện thoại
+      </mat-hint>
+      <mat-hint *ngIf="employeeForm.get('phone').hasError('pattern') && employeeForm.get('phone').touched"
+                style="color: rgb(211, 102, 102);">Bạn nhập sai định dạng số điện thoại
+      </mat-hint>
+    </mat-form-field>
+  </p>
+  <p>
+    <mat-form-field appearance="standard">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="pat@example.com" [formControlName]="'email'" required>
+      <mat-icon [ngClass]="{'red-icon': !employeeForm.get('email').valid && employeeForm.get('email').touched}"
+        matSuffix>email</mat-icon>
+      <mat-hint *ngIf="employeeForm.get('email').hasError('required') && employeeForm.get('email').touched"
+                style="color: rgb(211, 102, 102);">Email không được để trống
+      </mat-hint>
+      <mat-hint *ngIf="employeeForm.get('email').hasError('email')   && employeeForm.get('email').touched"
+                style="color: rgb(211, 102, 102);">Bạn nhập sai định dạng email
+      </mat-hint>
+    </mat-form-field>
+  </p>
+  </div>
+  <mat-dialog-actions align="end">
+    <button mat-flat-button mat-dialog-close>Thoát</button>
+  <button [disabled]="(!employeeForm.valid)" mat-flat-button color="primary">Thêm</button>
+</mat-dialog-actions>
+</form>
